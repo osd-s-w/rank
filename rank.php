@@ -24,18 +24,11 @@ function coreRate($gap, $win) {
  * @param  int    1=15 point over  0=up to 15 socre difference
  * @param  int    1=world cup match
  */
-function calcRate($rA, $rB, $home=0, $win=0, $wei=0, $dbl=0) {
+function calcRate($rA, $rB, $home=0, $win=0, $wei=0, $wc=0) {
     $diffA = 0;
     $diffB = 0;
-
-    $rateA = $rA;
-    $rateB = $rB;
-    if ($home==1) {
-        $rateA += 3.0;
-    } elseif ($home==2) {
-        $rateB += 3.0;
-    }
-    $gap = $rateA - $rateB;
+    $h = $home==1 ? 3.0 : ($home==2 ? -3.0 : 0);
+    $gap = $rA - $rB + $h;
 
     if ($win==1) {
         $diffA += coreRate((-1)*$gap, 1);
@@ -48,11 +41,11 @@ function calcRate($rA, $rB, $home=0, $win=0, $wei=0, $dbl=0) {
         $diffB += coreRate($gap, 0);
     }
 
-    if ($wei) {
+    if ($wei && $win!=0) {
         $diffA *= 1.5;
         $diffB *= 1.5;
     }
-    if ($dbl) {
+    if ($wc) {
         $diffA *= 2;
         $diffB *= 2;
     }
@@ -77,3 +70,11 @@ list($newA, $newB) = calcRate($a, $b, 1, 1, 1, 1); echo "{$a} {$b} => {$newA} {$
 list($newA, $newB) = calcRate($a, $b, 1, 0, 0, 1); echo "{$a} {$b} => {$newA} {$newB} \n";
 list($newA, $newB) = calcRate($a, $b, 1, 2, 0, 1); echo "{$a} {$b} => {$newA} {$newB} \n";
 list($newA, $newB) = calcRate($a, $b, 1, 2, 1, 1); echo "{$a} {$b} => {$newA} {$newB} \n";
+
+
+$a = 73.29; $b = 69.18;
+list($newA, $newB) = calcRate($a, $b, 0, 1, 0, 1); echo "{$a} {$b} => {$newA} {$newB} \n";
+list($newA, $newB) = calcRate($a, $b, 0, 1, 1, 1); echo "{$a} {$b} => {$newA} {$newB} \n";
+list($newA, $newB) = calcRate($a, $b, 0, 0, 0, 1); echo "{$a} {$b} => {$newA} {$newB} \n";
+list($newA, $newB) = calcRate($a, $b, 0, 2, 0, 1); echo "{$a} {$b} => {$newA} {$newB} \n";
+list($newA, $newB) = calcRate($a, $b, 0, 2, 1, 1); echo "{$a} {$b} => {$newA} {$newB} \n";
