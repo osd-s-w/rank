@@ -27,8 +27,7 @@ function coreRate($gap, $win) {
 function calcRate($rA, $rB, $home=0, $win=0, $wei=0, $wc=0) {
     $diffA = 0;
     $diffB = 0;
-    $h = $home==1 ? 3.0 : ($home==2 ? -3.0 : 0);
-    $gap = $rA - $rB + $h;
+    $gap = $rA - $rB + ($home==1 ? 3.0 : ($home==2 ? -3.0 : 0));
 
     if ($win==1) {
         $diffA += coreRate((-1)*$gap, 1);
